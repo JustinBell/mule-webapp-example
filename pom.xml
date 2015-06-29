@@ -9,9 +9,10 @@
     <name>Mule JavaEE Web Application Sample</name>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
 
-        <mule.version>3.6.1</mule.version>
+        <mule.version>3.7.0-M1</mule.version>
+        <spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 
         <jetty-plugin.version>9.2.3.v20140905</jetty-plugin.version>
         <local.server.port>8889</local.server.port>
@@ -35,34 +36,33 @@
             <artifactId>mule-transport-servlet</artifactId>
             <version>${mule.version}</version>
         </dependency>
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>com.github.denschu</groupId>
+            <artifactId>mule-spring-boot-starter</artifactId>
+            <version>99b2c8212e</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty-plugin.version}</version>
-                <configuration>
-                    <webApp>
-                        <contextPath>${local.server.path}</contextPath>
-                    </webApp>
-                    <httpConnector>
-                        <port>${local.server.port}</port>
-                    </httpConnector>
-                    <stopKey>rpooli-jetty</stopKey>
-                    <stopPort>${local.server.stop-port}</stopPort>
-                    <stopWait>60</stopWait>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -75,8 +75,12 @@
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 </project>
